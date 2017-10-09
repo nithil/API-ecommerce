@@ -1,0 +1,26 @@
+<h2>Cart</h2>
+
+<% if @line_items.empty? %>
+	<b>Your shopping cart is empty.<br/> Continue shopping <%= link_to "here", products_path %></b>
+<% else %>
+	<% total = 0 %>
+	<ol>
+	<% @line_items.each do |line_item| %>
+		<% response = HTTParty.get("http://localhost:3003/api/v1/products/#{line_item["product_id"]}") %>
+		<% @product = JSON.parse(response.body)["products"] %>
+		<li>Product - <%= link_to @product["name"], product_path(@product["id"]) %></li>
+		<% total += (@product["price"] * line_item["quantity"]) %>
+		<p>Price - <%= @product["price"] %></p>
+		<p>Quantity - <%= line_item["quantity"]  %></p>
+		<%= link_to "remove", "http://localhost:3004/api/v1/line_items/#{line_item["id"]}", method: :delete, data: {confirm: "Are you sure?"} %>
+	<% end %><br>
+	</ol>
+	<h3>Total - <%= total %></h3>
+	<%= form_tag("http://localhost:3005/api/v1/orders", method: :post) do %>
+		<%= hidden_field_tag :user_id, value = current_user.id %>
+		<%= hidden_field_tag :product_id, value = current_user.id %>
+		<%= hidden_field_tag :total, value = total %>
+		<%# binding.pry %>
+		<%= submit_tag "Checkout" %>
+	<% end %>
+<% end %>

@@ -1,0 +1,1 @@
+json.categories @category.errors.full_messages

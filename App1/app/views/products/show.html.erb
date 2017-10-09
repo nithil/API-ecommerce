@@ -1,0 +1,13 @@
+
+<h2>Name- <%= @product["name"] %></h2>
+ <h3>Price - <%= @product["price"] %></h3>
+
+
+<%= form_tag("http://localhost:3004/api/v1/line_items", method: :post) do %>
+	<label>Quantity : </label>
+	<%= select_tag :quantity, options_for_select(1..10) %><br/><br>
+	<%= hidden_field_tag :user_id, value = current_user.id %>
+	<%= hidden_field_tag :product_id, value = @product["id"] %>
+	<%# binding.pry %>
+	<%= submit_tag "Add to cart" %>
+<% end %>

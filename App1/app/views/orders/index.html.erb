@@ -1,0 +1,27 @@
+<h2>Your Orders</h2>
+
+
+
+<% @orders.each do |order| %>
+		<h3><%= order["order_no"] %> |
+		<%= order["order_date"] %> | INR 
+		<%= order["total"] %></h3>
+<%# binding.pry %>
+		<% response = HTTParty.get("http://localhost:3005/api/v1/order_line_items") %>
+		<% @order_line_item = JSON.parse(response.body)["order_line_items"] %>
+		<% @order_line_items = @order_line_item.find_all{|n| n["order_id"] == order["id"]} %>
+		<%# binding.pry %>
+		<ol>
+		<% @order_line_items.each do |order_line_item| %>
+					<%# binding.pry %>
+			<% response = HTTParty.get("http://localhost:3003/api/v1/products/#{order_line_item["product_id"]}") %>
+			<% @product = JSON.parse(response.body)["products"] %>
+			<%# binding.pry %>
+			
+				<li><%= @product["name"] %></li>				
+				<p>Quantity - <%= order_line_item["quantity"] %></p>
+				<p>Price - <%= @product["price"] %></p>		
+			
+		<% end %>
+	</ol>
+<% end %>

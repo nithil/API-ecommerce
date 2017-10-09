@@ -1,0 +1,58 @@
+<h1>eCommerce</h1>
+
+<h2>Listing Categories</h2>
+
+<table border="1">
+  <thead>
+    <tr>
+    	<th>#</th>
+     	<th>Name</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @categories["categories"].each_with_index do |category,index| %>
+      <tr>
+      	<td><%= index+1 %></td>
+        <%# binding.pry %>
+        <td>
+        	<%= link_to category["name"], category_path(category["id"]) %>
+        </td>  
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>Listing Products</h2>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Category</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @products["products"].each_with_index do |product,index| %>
+      <tr>
+        <td><%= index+1 %></td>
+        <td>
+          <%= link_to product["name"], product_path(product["id"]) %>
+        </td>
+        <td>
+          <%= product["price"] %>
+        </td> 
+        <td>
+          <% @categories["categories"].each do |category| %>
+            <% if category["id"] == product["category_id"] %>
+              <%= link_to category["name"], category_path(category["id"])  %>
+            <% end %>
+          <% end %>
+        </td> 
+      </tr>
+    <% end %>
+  </tbody>
+</table>

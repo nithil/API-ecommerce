@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>App1</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p>
+
+<% if user_signed_in? %>
+	<%= current_user.username %> |
+	<%= link_to "Account Settings", edit_user_registration_path %> | 
+	<%= link_to "Logout", destroy_user_session_path, method: :delete %><hr>
+  <%= link_to "Home", sites_index_path %> |
+  <%= link_to "cart", line_items_path %> |
+  <%= link_to "orders", orders_path %>
+   <% else %>
+	<%= link_to "Login", new_user_session_path %> | <%= link_to "Register", new_user_registration_path %> 
+  <% end %><hr>
+<%= yield %>
+
+</body>
+</html>
